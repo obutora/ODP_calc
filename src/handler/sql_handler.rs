@@ -1,20 +1,43 @@
 use rusqlite::{params, Connection, Result};
-
 use crate::entity::person::Person;
 
-// #[derive(Debug)]
-// struct Person {
-//     id: i32,
-//     name: String,
-// }
+const IS_IN_MEMORY: bool = true;
+const DB_PATH: &str = "./test.db";
 
-// pub fn sql_print(){
-//     println!("Hello from sql_handler");
-// }
+fn get_connection() -> Connection {
+    if IS_IN_MEMORY {
+        let conn = Connection::open_in_memory().unwrap();
+        conn
+    } else {
+        let conn = Connection::open(DB_PATH).unwrap();
+        conn
+    }
+}
+
+pub fn init_sql(conn :&Connection) {
+    // let conn = get_connection();
+
+    if IS_IN_MEMORY {
+        conn.execute(
+            "CREATE TABLE IF NOT EXISTS PERSON (
+                      id              INTEGER PRIMARY KEY AUTOINCREMENT,
+                      name            TEXT NOT NULL
+                      )",
+            (),
+        ).unwrap();
+
+        conn.execute(
+            "INSERT INTO PERSON (name) VALUES (?1)",
+            params!["In Memory"],
+        ).unwrap();
+    
+    }
+}
+
 
 pub fn read_sql() -> Vec<Person> {
-    const DB_PATH: &str = "./test.db";
-    let conn = Connection::open(DB_PATH).unwrap();
+    let conn = get_connection();
+    init_sql(&conn);
 
     let mut result = conn.prepare("SELECT * FROM PERSON").unwrap();
 
