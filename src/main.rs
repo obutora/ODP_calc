@@ -8,11 +8,9 @@ use handler::sql_handler;
 #[get("/")]
 async fn hello() -> impl Responder {
     let persons = sql_handler::read_sql();
-    let persons_json_string = serde_json::to_string(&persons).unwrap();
 
     HttpResponse::Ok()
-        .content_type("aplication/json")
-        .body(persons_json_string)
+    .json(persons)
 }
 
 #[post("/echo")]
