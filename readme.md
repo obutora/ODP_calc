@@ -10,6 +10,7 @@ Patient }|--|| MedCollection : ""
 
     Patient {
         int id PK
+        int patientId
         string name
     }
 
@@ -28,3 +29,4 @@ Patient }|--|| MedCollection : ""
     }
 
 ```
+**Patient（id）**　→ MedCollection(patientId)であり、**Patient（patientId)はリレーションに使用しない。**
