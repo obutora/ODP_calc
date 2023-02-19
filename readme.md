@@ -83,6 +83,7 @@ Patient }|--|| MedCollection : ""
         int id PK
         int patientId
         string name
+        string katakana
     }
 
     MedCollection {
