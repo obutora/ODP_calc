@@ -2,10 +2,13 @@ import 'package:isar/isar.dart';
 
 import '../const.dart';
 import '../entity/med_collection.dart';
+import '../interface/isar_repository_interface.dart';
 import 'isar.dart';
 
-class MedCollectionRepository {
-  static Future getAll() async {
+class MedCollectionRepository
+    implements IsarRepositoryInterface<MedCollection> {
+  @override
+  Future<List<MedCollection>> getAll() async {
     final medCollections = IsarRepository.isar.medCollections;
     final getAll = await medCollections.where().findAll();
 
@@ -13,7 +16,8 @@ class MedCollectionRepository {
     return getAll;
   }
 
-  static Future<MedCollection?> getById(int id) async {
+  @override
+  Future<MedCollection?> getById(int id) async {
     final medCollections = IsarRepository.isar.medCollections;
     final getById = await medCollections.where().idEqualTo(id).findFirst();
 
@@ -21,7 +25,8 @@ class MedCollectionRepository {
     return getById;
   }
 
-  static Future put(MedCollection medCollection) async {
+  @override
+  Future<int> put(MedCollection medCollection) async {
     final medCollections = IsarRepository.isar.medCollections;
 
     final id = await IsarRepository.isar.writeTxn(() async {
@@ -32,18 +37,19 @@ class MedCollectionRepository {
     return id;
   }
 
-  static Future deleteById(int id) async {
+  @override
+  Future deleteById(int id) async {
     final medCollections = IsarRepository.isar.medCollections;
 
-    final deleteId = await IsarRepository.isar.writeTxn(() async {
+    await IsarRepository.isar.writeTxn(() async {
       return await medCollections.delete(id);
     });
 
     log.v('delete : $id');
-    return deleteId;
   }
 
-  static Future isExistById(int id) async {
+  @override
+  Future<bool> isExistById(int id) async {
     final medCollections = IsarRepository.isar.medCollections;
     final isExist = await medCollections.where().idEqualTo(id).isNotEmpty();
 
