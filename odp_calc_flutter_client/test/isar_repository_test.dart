@@ -1,8 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:odp_calc_flutter_client/entity/med_collection.dart';
+import 'package:odp_calc_flutter_client/entity/med_master.dart';
 import 'package:odp_calc_flutter_client/entity/patient.dart';
 import 'package:odp_calc_flutter_client/repository/isar.dart';
 import 'package:odp_calc_flutter_client/repository/med_collection_repository.dart';
+import 'package:odp_calc_flutter_client/repository/med_master_repository.dart';
 import 'package:odp_calc_flutter_client/repository/patient_repository.dart';
 
 Future main() async {
@@ -100,6 +102,48 @@ Future main() async {
 
       // 存在確認
       isExist = await repo.isExistById(patient.id!);
+      expect(isExist, false);
+    });
+  });
+
+  // MedMaster ----------------------------------------------------------------
+  group("MedMaster: CRUD", () {
+    final medMaster = MedMaster(id: 34567, name: "アムロジピン", unit: "錠");
+    final repo = MedMasterRepository();
+
+    test("put: MedMaster", () async {
+      await repo.put(medMaster);
+
+      final getted = await repo.getById(medMaster.id!);
+      final isExist = await repo.isExistById(medMaster.id!);
+
+      // 存在確認
+      expect(isExist, true);
+
+      // idチェック
+      expect(medMaster.id, getted!.id);
+    });
+
+    test("update: MedMaster", () async {
+      medMaster.name = "update";
+      await repo.put(medMaster);
+
+      final getted = await repo.getById(medMaster.id!);
+
+      // idチェック
+      expect(medMaster.id, getted!.id);
+      // nameチェック
+      expect(getted.name, "update");
+    });
+
+    test("delete: MedMaster", () async {
+      bool isExist = await repo.isExistById(medMaster.id!);
+      expect(isExist, true);
+
+      await repo.deleteById(medMaster.id!);
+
+      // 存在確認
+      isExist = await repo.isExistById(medMaster.id!);
       expect(isExist, false);
     });
   });

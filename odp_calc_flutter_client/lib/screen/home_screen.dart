@@ -30,7 +30,9 @@ class HomeScreen extends StatelessWidget {
                 isCollected: false,
               );
 
-              final id = await MedCollectionRepository.put(medCollection);
+              final repo = MedCollectionRepository();
+
+              final id = await repo.put(medCollection);
               print(id);
             },
             child: const Text('put test'),
@@ -40,8 +42,9 @@ class HomeScreen extends StatelessWidget {
               // final List<Patient?> patients = await PatientRepository.getAll();
               // log.v('patients : $patients');
 
-              final List<MedCollection?> medCollections =
-                  await MedCollectionRepository.getAll();
+              final repo = MedCollectionRepository();
+
+              final List<MedCollection?> medCollections = await repo.getAll();
 
               log.v('medCollections : $medCollections');
             },
