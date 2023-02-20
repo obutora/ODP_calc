@@ -1,0 +1,39 @@
+{
+  // IntelliSense を使用して利用可能な属性を学べます。
+  // 既存の属性の説明をホバーして表示します。
+  // 詳細情報は次を確認してください: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "odp_calc_flutter_client",
+      "request": "launch",
+      "type": "dart"
+    },
+    {
+      "name": "odp_calc_flutter_client (profile mode)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile"
+    },
+    {
+      "name": "odp_calc_flutter_client (release mode)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release"
+    },
+    {
+      "name": "Path set mode",
+      "type": "dart",
+      "request": "launch",
+      "codeLens": {
+        // Types of CodeLens to inject
+        "for": ["run-test", "run-test-file", "debug-test", "debug-test-file"],
+        // Text for CodeLens link (${debugType} will be replaced with "run" or "debug")
+        "title": "${debugType} (PATH)"
+      },
+      "env": {
+        "PATH": "${workspaceRoot}\\build\\windows\\runner\\Debug;${env:PATH}"
+      }
+    }
+  ]
+}
