@@ -56,4 +56,13 @@ class MedCollectionRepository
     log.v('isExist : $isExist');
     return isExist;
   }
+
+  Future<List<MedCollection>> getByPatientId(int patientId) async {
+    final medCollections = IsarRepository.isar.medCollections;
+    final getByPatientId =
+        await medCollections.filter().patientIdEqualTo(patientId).findAll();
+
+    log.v('getByPatientId : $getByPatientId');
+    return getByPatientId;
+  }
 }
