@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:odp_calc_flutter_client/entity/med_collection.dart';
 import 'package:odp_calc_flutter_client/entity/med_master.dart';
@@ -104,6 +106,31 @@ Future main() async {
       isExist = await repo.isExistById(patient.id!);
       expect(isExist, false);
     });
+
+    test("get by kana", () async {
+      final abnormal = Patient(
+        id: 23456,
+        patientId: 34567,
+        name: "test",
+        katakana: "アブノーマル",
+        updateAt: DateTime.now(),
+      );
+
+      await repo.put(patient);
+      await repo.put(abnormal);
+
+      // 正常系
+      final patients = await repo.getByKana("テスト");
+      expect(patients[0]!.id, patient.id);
+
+      // 異常系
+      final abnormalExists =
+          patients.any((item) => item!.katakana!.contains("アブノーマル"));
+      expect(abnormalExists, false);
+
+      await repo.deleteById(patient.id!);
+      await repo.deleteById(abnormal.id!);
+    });
   });
 
   // MedMaster ----------------------------------------------------------------
@@ -145,6 +172,18 @@ Future main() async {
       // 存在確認
       isExist = await repo.isExistById(medMaster.id!);
       expect(isExist, false);
+    });
+
+    test("get by name", () async {
+      await repo.put(medMaster);
+
+      final medMasters = await repo.getByName("アムロジピン");
+      expect(medMasters.isNotEmpty, true);
+      expect(medMasters[0].name, "アムロジピン");
+
+      expect(medMasters[0].name!.contains("アミオダロン"), false);
+
+      await repo.deleteById(medMaster.id!);
     });
   });
 }
