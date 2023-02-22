@@ -1,4 +1,5 @@
 import 'package:isar/isar.dart';
+import 'package:odp_calc_flutter_client/entity/enum/exists.dart';
 
 import '../const.dart';
 import '../entity/patient.dart';
@@ -55,5 +56,29 @@ class PatientRepository implements IsarRepositoryInterface<Patient> {
 
     log.v('isExist : $isExist');
     return isExist;
+  }
+
+  Future<Exists> existsKana(String kana) async {
+    final patients = IsarRepository.isar.patients;
+    final count = await patients.filter().katakanaContains(kana).count();
+
+    log.v('isDoubleKana : $count');
+
+    if (count == 0) {
+      return Exists.empty;
+    } else if (count == 1) {
+      return Exists.single;
+    } else {
+      return Exists.multiple;
+    }
+    ;
+  }
+
+  Future<List<Patient?>> getByKana(String kana) async {
+    final patients = IsarRepository.isar.patients;
+    final getByKana = await patients.filter().katakanaContains(kana).findAll();
+
+    log.v('getByKana : $getByKana');
+    return getByKana;
   }
 }
