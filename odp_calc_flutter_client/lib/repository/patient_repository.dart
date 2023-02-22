@@ -37,6 +37,17 @@ class PatientRepository implements IsarRepositoryInterface<Patient> {
     return id;
   }
 
+  Future putAll(List<Patient> patients) async {
+    final isarPatients = IsarRepository.isar.patients;
+
+    final ids = await IsarRepository.isar.writeTxn(() async {
+      return await isarPatients.putAll(patients);
+    });
+    log.v('putAll : $patients');
+
+    return ids;
+  }
+
   @override
   Future deleteById(int id) async {
     final patients = IsarRepository.isar.patients;
@@ -62,7 +73,7 @@ class PatientRepository implements IsarRepositoryInterface<Patient> {
     final patients = IsarRepository.isar.patients;
     final count = await patients.filter().katakanaContains(kana).count();
 
-    log.v('isDoubleKana : $count');
+    log.v('exist kana count : $count');
 
     if (count == 0) {
       return Exists.empty;
@@ -71,7 +82,12 @@ class PatientRepository implements IsarRepositoryInterface<Patient> {
     } else {
       return Exists.multiple;
     }
-    ;
+  }
+
+  Future<int> count() async {
+    final patients = IsarRepository.isar.patients;
+    final count = await patients.where().count();
+    return count;
   }
 
   Future<List<Patient?>> getByKana(String kana) async {
@@ -80,5 +96,15 @@ class PatientRepository implements IsarRepositoryInterface<Patient> {
 
     log.v('getByKana : $getByKana');
     return getByKana;
+  }
+
+  Future deleteByName(String name) async {
+    final patients = IsarRepository.isar.patients;
+    final deleteByName = await IsarRepository.isar.writeTxn(() async {
+      return await patients.filter().nameEqualTo(name).deleteAll();
+    });
+
+    log.v('deleteByName : $deleteByName');
+    return deleteByName;
   }
 }

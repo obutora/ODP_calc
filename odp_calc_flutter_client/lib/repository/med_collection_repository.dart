@@ -7,9 +7,9 @@ import 'isar.dart';
 
 class MedCollectionRepository
     implements IsarRepositoryInterface<MedCollection> {
+  final medCollections = IsarRepository.isar.medCollections;
   @override
   Future<List<MedCollection>> getAll() async {
-    final medCollections = IsarRepository.isar.medCollections;
     final getAll = await medCollections.where().findAll();
 
     log.v('get all medCollections length : ${getAll.length}');
@@ -18,7 +18,6 @@ class MedCollectionRepository
 
   @override
   Future<MedCollection?> getById(int id) async {
-    final medCollections = IsarRepository.isar.medCollections;
     final getById = await medCollections.where().idEqualTo(id).findFirst();
 
     log.v('getById : $getById');
@@ -27,8 +26,6 @@ class MedCollectionRepository
 
   @override
   Future<int> put(MedCollection medCollection) async {
-    final medCollections = IsarRepository.isar.medCollections;
-
     final id = await IsarRepository.isar.writeTxn(() async {
       return await medCollections.put(medCollection);
     });
@@ -39,8 +36,6 @@ class MedCollectionRepository
 
   @override
   Future deleteById(int id) async {
-    final medCollections = IsarRepository.isar.medCollections;
-
     await IsarRepository.isar.writeTxn(() async {
       return await medCollections.delete(id);
     });
@@ -50,7 +45,6 @@ class MedCollectionRepository
 
   @override
   Future<bool> isExistById(int id) async {
-    final medCollections = IsarRepository.isar.medCollections;
     final isExist = await medCollections.where().idEqualTo(id).isNotEmpty();
 
     log.v('isExist : $isExist');
@@ -58,11 +52,18 @@ class MedCollectionRepository
   }
 
   Future<List<MedCollection>> getByPatientId(int patientId) async {
-    final medCollections = IsarRepository.isar.medCollections;
     final getByPatientId =
         await medCollections.filter().patientIdEqualTo(patientId).findAll();
 
     log.v('getByPatientId : $getByPatientId');
     return getByPatientId;
+  }
+
+  Future deleteByPatientId(int id) async {
+    await IsarRepository.isar.writeTxn(() async {
+      return await medCollections.filter().patientIdEqualTo(id).deleteAll();
+    });
+
+    log.v('deleteByPatientId : $id');
   }
 }

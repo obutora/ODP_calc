@@ -1,6 +1,5 @@
-import 'dart:math';
-
 import 'package:flutter_test/flutter_test.dart';
+import 'package:isar/isar.dart';
 import 'package:odp_calc_flutter_client/entity/med_collection.dart';
 import 'package:odp_calc_flutter_client/entity/med_master.dart';
 import 'package:odp_calc_flutter_client/entity/patient.dart';
@@ -10,6 +9,9 @@ import 'package:odp_calc_flutter_client/repository/med_master_repository.dart';
 import 'package:odp_calc_flutter_client/repository/patient_repository.dart';
 
 Future main() async {
+  // test用のDBをダウンロード
+  // await Isar.initializeIsarCore(download: true);
+
   await IsarRepository.init();
 
   // MedCollection ------------------------------------------------------------
@@ -121,15 +123,18 @@ Future main() async {
 
       // 正常系
       final patients = await repo.getByKana("テスト");
-      expect(patients[0]!.id, patient.id);
+
+      //複数のレコードが返ってくる可能性があるため
+      final isContainId = patients.any((item) => item!.id == patient.id);
+      expect(isContainId, true);
 
       // 異常系
       final abnormalExists =
           patients.any((item) => item!.katakana!.contains("アブノーマル"));
       expect(abnormalExists, false);
 
-      await repo.deleteById(patient.id!);
-      await repo.deleteById(abnormal.id!);
+      await repo.deleteByName(patient.name!);
+      await repo.deleteByName(abnormal.name!);
     });
   });
 
@@ -161,9 +166,13 @@ Future main() async {
       expect(medMaster.id, getted!.id);
       // nameチェック
       expect(getted.name, "update");
+
+      await repo.deleteById(medMaster.id!);
     });
 
     test("delete: MedMaster", () async {
+      await repo.put(medMaster);
+
       bool isExist = await repo.isExistById(medMaster.id!);
       expect(isExist, true);
 
@@ -175,13 +184,15 @@ Future main() async {
     });
 
     test("get by name", () async {
+      final medMaster = MedMaster(id: 34567, name: "アムロジピン", unit: "錠");
       await repo.put(medMaster);
 
       final medMasters = await repo.getByName("アムロジピン");
+      print(medMasters);
       expect(medMasters.isNotEmpty, true);
-      expect(medMasters[0].name, "アムロジピン");
+      expect(medMasters[0]!.name, "アムロジピン");
 
-      expect(medMasters[0].name!.contains("アミオダロン"), false);
+      expect(medMasters[0]!.name!.contains("アミオダロン"), false);
 
       await repo.deleteById(medMaster.id!);
     });
