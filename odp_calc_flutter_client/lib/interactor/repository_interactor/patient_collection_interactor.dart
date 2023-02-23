@@ -14,7 +14,7 @@ class PatientMedCollectionInteractor {
     // 重複なしの場合は患者名（カナ）をもとに患者IDを特定
     // 患者IDから集薬リストを抽出
 
-    final existsKana = await patientRepo.existsKana(kana);
+    final existsKana = await patientRepo.existsByKana(kana);
     print(existsKana);
 
     if (existsKana == Exists.multiple) {
