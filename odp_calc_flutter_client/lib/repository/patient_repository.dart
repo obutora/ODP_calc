@@ -56,6 +56,15 @@ class PatientRepository implements IsarRepositoryInterface<Patient> {
     return deleteId;
   }
 
+  /// DANGER:テスト用：全削除
+  Future deleteAll() async {
+    final deleteAll = await IsarRepository.isar.writeTxn(() async {
+      return await patients.clear();
+    });
+
+    return deleteAll;
+  }
+
   @override
   Future<bool> isExistById(int id) async {
     final isExist = await patients.where().idEqualTo(id).isNotEmpty();

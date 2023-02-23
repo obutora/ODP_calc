@@ -1,4 +1,5 @@
 import 'package:isar/isar.dart';
+import 'package:odp_calc_flutter_client/entity/enum/exists.dart';
 
 import '../const.dart';
 import '../entity/med_master.dart';
@@ -43,6 +44,14 @@ class MedMasterRepository implements IsarRepositoryInterface<MedMaster> {
     log.v('delete : $id');
   }
 
+  Future deleteAll() async {
+    await IsarRepository.isar.writeTxn(() async {
+      return await medMasters.clear();
+    });
+
+    log.v('deleteAll');
+  }
+
   @override
   Future<bool> isExistById(int id) async {
     final isExist = await medMasters.where().idEqualTo(id).isNotEmpty();
@@ -51,10 +60,42 @@ class MedMasterRepository implements IsarRepositoryInterface<MedMaster> {
     return isExist;
   }
 
+  Future<Exists> existsByName(String name) async {
+    final count = await medMasters.filter().nameContains(name).count();
+
+    log.v('existsByName : $count');
+
+    if (count == 0) {
+      return Exists.empty;
+    } else if (count == 1) {
+      return Exists.single;
+    } else {
+      return Exists.multiple;
+    }
+  }
+
   Future<List<MedMaster?>> getByName(String name) async {
     final getByName = await medMasters.filter().nameContains(name).findAll();
 
     log.v('getByName : $getByName');
     return getByName;
+  }
+
+  Future<List<int?>> getIdListByName(String name) async {
+    final getById = await medMasters.filter().nameContains(name).findAll();
+
+    log.v('getIdByName : $getById');
+    return getById.map((e) => e.id).toList();
+  }
+
+  /// [name] を含む薬剤をすべて削除する
+  ///
+  ///テスト用の関数であり安易に使用すべきでない
+  Future deleteAllByName(String name) async {
+    await IsarRepository.isar.writeTxn(() async {
+      return await medMasters.filter().nameContains(name).deleteAll();
+    });
+
+    log.v('deleteAllByName : $name');
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:isar/isar.dart';
+import 'package:odp_calc_flutter_client/entity/enum/exists.dart';
 import 'package:odp_calc_flutter_client/entity/med_collection.dart';
 import 'package:odp_calc_flutter_client/entity/med_master.dart';
 import 'package:odp_calc_flutter_client/entity/patient.dart';
@@ -58,6 +59,98 @@ Future main() async {
       // 存在確認
       isExist = await repo.isExistById(medCollection.id!);
       expect(isExist, false);
+    });
+
+    test("delete all", () async {
+      final all = await repo.getAll();
+      final ids = all.map((e) => e.id!.toInt()).toList();
+
+      await repo.deleteAllByIds(ids);
+
+      final empty = await repo.getAll();
+      expect(empty.isEmpty, true);
+    });
+
+    test("getByPatientId: med_collection", () async {
+      final medCollection1 = MedCollection(
+        id: 123456,
+        patientId: 1,
+        medMasterId: 2,
+        amount: 100,
+        isCollected: false,
+      );
+      final medCollection2 = MedCollection(
+        id: 123457,
+        patientId: 1,
+        medMasterId: 3,
+        amount: 100,
+        isCollected: false,
+      );
+      final medCollection3 = MedCollection(
+        id: 123458,
+        patientId: 2,
+        medMasterId: 2,
+        amount: 100,
+        isCollected: false,
+      );
+
+      final ids = await repo.putAll([
+        medCollection1,
+        medCollection2,
+        medCollection3,
+      ]);
+
+      final getPatient = await repo.getByPatientId(1);
+      // 存在確認
+      expect(getPatient.length, 2);
+
+      final getPatient2 = await repo.getByPatientId(2);
+      expect(getPatient2.length, 1);
+
+      await repo.deleteAllByIds(ids);
+      final getEmptyPatient = await repo.getByPatientId(1);
+      expect(getEmptyPatient.isEmpty, true);
+    });
+
+    test("get by MedMaster ID", () async {
+      final medCollection1 = MedCollection(
+        id: 123456,
+        patientId: 1,
+        medMasterId: 2,
+        amount: 100,
+        isCollected: false,
+      );
+      final medCollection2 = MedCollection(
+        id: 123457,
+        patientId: 1,
+        medMasterId: 3,
+        amount: 100,
+        isCollected: false,
+      );
+      final medCollection3 = MedCollection(
+        id: 123458,
+        patientId: 2,
+        medMasterId: 2,
+        amount: 100,
+        isCollected: false,
+      );
+
+      final ids = await repo.putAll([
+        medCollection1,
+        medCollection2,
+        medCollection3,
+      ]);
+
+      final getPatient = await repo.getByMedMasterId(2);
+      // 存在確認
+      expect(getPatient.length, 2);
+
+      final getPatient2 = await repo.getByMedMasterId(3);
+      expect(getPatient2.length, 1);
+
+      await repo.deleteAllByIds(ids);
+      final getEmptyPatient = await repo.getByMedMasterId(2);
+      expect(getEmptyPatient.isEmpty, true);
     });
   });
 
@@ -195,6 +288,49 @@ Future main() async {
       expect(medMasters[0]!.name!.contains("アミオダロン"), false);
 
       await repo.deleteById(medMaster.id!);
+    });
+
+    test("exists by name", () async {
+      await repo.deleteAllByName("アムロジピン");
+
+      final medMaster = MedMaster(name: "アムロジピン", unit: "錠");
+      await repo.put(medMaster);
+
+      final Exists single = await repo.existsByName("アムロジピン");
+      expect(single, Exists.single);
+
+      final medMaster2 = MedMaster(name: "アムロジピン", unit: "錠");
+      await repo.put(medMaster2);
+
+      final Exists multi = await repo.existsByName("アムロジピン");
+      expect(multi, Exists.multiple);
+
+      await repo.deleteAllByName("アムロジピン");
+      final Exists empty = await repo.existsByName("アムロジピン");
+      expect(empty, Exists.empty);
+    });
+
+    test("getId by name", () async {
+      // 初期データを作成して、該当1件のみであることをチェック
+      final medMaster = MedMaster(name: "アムロジピン", unit: "錠");
+      final puttedId = await repo.put(medMaster);
+      expect(await repo.existsByName("アムロジピン"), Exists.single);
+
+      // 単一のレコードが返ってくることを確認
+      final idList = await repo.getIdListByName("アムロジピン");
+      expect(idList.isNotEmpty, true);
+
+      // 検索したIDとputの際に得られたIDが一致することを確認
+      final masterId = idList[0]!;
+      expect(masterId, puttedId);
+
+      // IDをもとに得られたデータとputしたデータが合致することを確認
+      final getMasterById = await repo.getById(masterId);
+      expect(getMasterById!.id, puttedId);
+      expect(getMasterById.name, "アムロジピン");
+      expect(getMasterById.unit, "錠");
+
+      await repo.deleteById(puttedId);
     });
   });
 }
