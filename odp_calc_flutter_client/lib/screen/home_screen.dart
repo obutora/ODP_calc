@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:odp_calc_flutter_client/entity/med_master.dart';
 import 'package:printing/printing.dart';
 
 import '../const.dart';
 import '../entity/med_collection.dart';
 import '../repository/med_collection_repository.dart';
+import '../repository/med_master_repository.dart';
 import '../usecase/pdf.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -26,17 +28,20 @@ class HomeScreen extends StatelessWidget {
 
                 // await PatientRepository.put(patient);
 
-                final medCollection = MedCollection(
-                  patientId: 1,
-                  medMasterId: 2,
-                  amount: 100,
-                  isCollected: false,
-                );
+                // final medCollection = MedCollection(
+                //   patientId: 1,
+                //   medMasterId: 2,
+                //   amount: 100,
+                //   isCollected: false,
+                // );
 
-                final repo = MedCollectionRepository();
+                // final repo = MedCollectionRepository();
 
-                final id = await repo.put(medCollection);
-                print(id);
+                // final id = await repo.put(medCollection);
+                // print(id);
+
+                final medMaster = MedMaster(name: "アムロジピン", unit: "錠");
+                await MedMasterRepository().put(medMaster);
               },
               child: const Text('put test'),
             ),
