@@ -1,4 +1,3 @@
-import 'package:logger/logger.dart';
 import 'package:odp_calc_flutter_client/const.dart';
 import 'package:odp_calc_flutter_client/entity/enum/exists.dart';
 import 'package:odp_calc_flutter_client/entity/picked_med_collection/by_name.dart';
@@ -27,12 +26,12 @@ class AllRepositoryInteractor {
       final medMasters = await medMasterRepo.getByName(medName);
       final medMasterId = medMasters.first!.id!;
 
-      log.i('medMasterId: $medMasterId');
+      log.v('medMasterId: $medMasterId');
 
       final medCollections =
           await medCollectionRepo.getByMedMasterId(medMasterId);
 
-      log.i('medCollections: $medCollections');
+      log.v('medCollections: $medCollections');
 
       final pickedMedCollectionList = <PickedMedCollectionByName?>[];
 

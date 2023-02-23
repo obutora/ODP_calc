@@ -4,10 +4,12 @@ import 'package:odp_calc_flutter_client/entity/med_master.dart';
 import 'package:odp_calc_flutter_client/entity/patient.dart';
 import 'package:odp_calc_flutter_client/entity/picked_med_collection/by_name.dart';
 import 'package:odp_calc_flutter_client/interactor/repository_interactor/all_repository_interactor.dart';
+import 'package:odp_calc_flutter_client/interface/picked_med_collection.dart';
 import 'package:odp_calc_flutter_client/repository/isar.dart';
 import 'package:odp_calc_flutter_client/repository/med_collection_repository.dart';
 import 'package:odp_calc_flutter_client/repository/med_master_repository.dart';
 import 'package:odp_calc_flutter_client/repository/patient_repository.dart';
+import 'package:odp_calc_flutter_client/usecase/picked_med_collection_usecase.dart';
 
 Future main() async {
   // test用のDBをダウンロード
@@ -23,7 +25,7 @@ Future main() async {
   await medMasterRepo.deleteAll();
   await medCollectionRepo.deleteAll();
 
-  group("test", () {
+  group("all repository interactor", () {
     test("create: PickedMedCollection", () async {
       final patient = Patient(
           id: 1,
@@ -75,6 +77,13 @@ Future main() async {
       expect(picked.patientName, 'patient');
       expect(picked.medName, 'アムロジピン');
       expect(picked.amount, 100);
+
+      // isCollectedで分割できるか確認
+      final splitted = PickedMedCollectionUsecase.splitByIsCollected(
+          pickedList.cast<PickedMedCollection>());
+
+      expect(splitted['collected']!.isEmpty, true);
+      expect(splitted['notCollected']!.isNotEmpty, true);
 
       await patientRepo.deleteByName('patient');
       await medMasterRepo.deleteAllByName('アムロジピン');
