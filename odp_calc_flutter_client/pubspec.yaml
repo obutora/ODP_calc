@@ -40,6 +40,11 @@ dependencies:
   logger: ^1.1.0
   printing: ^5.10.1
   pdf: ^3.9.0
+  window_size:
+    git:
+      url: https://github.com/google/flutter-desktop-embedding.git
+      path: plugins/window_size
+      ref: a738913
 
 dev_dependencies:
   flutter_test:
