@@ -9,8 +9,9 @@ class IsarRepository {
   static late Isar isar;
 
   static Future<void> init() async {
-    isar =
-        await Isar.open([PatientSchema, MedMasterSchema, MedCollectionSchema]);
+    isar = await Isar.open(
+      [PatientSchema, MedMasterSchema, MedCollectionSchema],
+    );
 
     log.i('IsarRepository init');
   }
