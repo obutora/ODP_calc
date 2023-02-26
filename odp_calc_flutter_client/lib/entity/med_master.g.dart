@@ -26,6 +26,11 @@ const MedMasterSchema = CollectionSchema(
       id: 1,
       name: r'unit',
       type: IsarType.string,
+    ),
+    r'yjCode': PropertySchema(
+      id: 2,
+      name: r'yjCode',
+      type: IsarType.string,
     )
   },
   estimateSize: _medMasterEstimateSize,
@@ -60,6 +65,12 @@ int _medMasterEstimateSize(
       bytesCount += 3 + value.length * 3;
     }
   }
+  {
+    final value = object.yjCode;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   return bytesCount;
 }
 
@@ -71,6 +82,7 @@ void _medMasterSerialize(
 ) {
   writer.writeString(offsets[0], object.name);
   writer.writeString(offsets[1], object.unit);
+  writer.writeString(offsets[2], object.yjCode);
 }
 
 MedMaster _medMasterDeserialize(
@@ -83,6 +95,7 @@ MedMaster _medMasterDeserialize(
     id: id,
     name: reader.readStringOrNull(offsets[0]),
     unit: reader.readStringOrNull(offsets[1]),
+    yjCode: reader.readStringOrNull(offsets[2]),
   );
   return object;
 }
@@ -97,6 +110,8 @@ P _medMasterDeserializeProp<P>(
     case 0:
       return (reader.readStringOrNull(offset)) as P;
     case 1:
+      return (reader.readStringOrNull(offset)) as P;
+    case 2:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -554,6 +569,152 @@ extension MedMasterQueryFilter
       ));
     });
   }
+
+  QueryBuilder<MedMaster, MedMaster, QAfterFilterCondition> yjCodeIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'yjCode',
+      ));
+    });
+  }
+
+  QueryBuilder<MedMaster, MedMaster, QAfterFilterCondition> yjCodeIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'yjCode',
+      ));
+    });
+  }
+
+  QueryBuilder<MedMaster, MedMaster, QAfterFilterCondition> yjCodeEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'yjCode',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<MedMaster, MedMaster, QAfterFilterCondition> yjCodeGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'yjCode',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<MedMaster, MedMaster, QAfterFilterCondition> yjCodeLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'yjCode',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<MedMaster, MedMaster, QAfterFilterCondition> yjCodeBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'yjCode',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<MedMaster, MedMaster, QAfterFilterCondition> yjCodeStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'yjCode',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<MedMaster, MedMaster, QAfterFilterCondition> yjCodeEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'yjCode',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<MedMaster, MedMaster, QAfterFilterCondition> yjCodeContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'yjCode',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<MedMaster, MedMaster, QAfterFilterCondition> yjCodeMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'yjCode',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<MedMaster, MedMaster, QAfterFilterCondition> yjCodeIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'yjCode',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<MedMaster, MedMaster, QAfterFilterCondition> yjCodeIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'yjCode',
+        value: '',
+      ));
+    });
+  }
 }
 
 extension MedMasterQueryObject
@@ -584,6 +745,18 @@ extension MedMasterQuerySortBy on QueryBuilder<MedMaster, MedMaster, QSortBy> {
   QueryBuilder<MedMaster, MedMaster, QAfterSortBy> sortByUnitDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'unit', Sort.desc);
+    });
+  }
+
+  QueryBuilder<MedMaster, MedMaster, QAfterSortBy> sortByYjCode() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'yjCode', Sort.asc);
+    });
+  }
+
+  QueryBuilder<MedMaster, MedMaster, QAfterSortBy> sortByYjCodeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'yjCode', Sort.desc);
     });
   }
 }
@@ -625,6 +798,18 @@ extension MedMasterQuerySortThenBy
       return query.addSortBy(r'unit', Sort.desc);
     });
   }
+
+  QueryBuilder<MedMaster, MedMaster, QAfterSortBy> thenByYjCode() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'yjCode', Sort.asc);
+    });
+  }
+
+  QueryBuilder<MedMaster, MedMaster, QAfterSortBy> thenByYjCodeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'yjCode', Sort.desc);
+    });
+  }
 }
 
 extension MedMasterQueryWhereDistinct
@@ -640,6 +825,13 @@ extension MedMasterQueryWhereDistinct
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'unit', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<MedMaster, MedMaster, QDistinct> distinctByYjCode(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'yjCode', caseSensitive: caseSensitive);
     });
   }
 }
@@ -661,6 +853,12 @@ extension MedMasterQueryProperty
   QueryBuilder<MedMaster, String?, QQueryOperations> unitProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'unit');
+    });
+  }
+
+  QueryBuilder<MedMaster, String?, QQueryOperations> yjCodeProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'yjCode');
     });
   }
 }

@@ -27,7 +27,6 @@ Future main() async {
       try {
         await interactor.getCollectionByKana("テスト");
       } catch (e) {
-        print(e.toString());
         isSuccess = false;
       }
       expect(isSuccess, false);
