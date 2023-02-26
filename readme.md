@@ -98,7 +98,6 @@ Patient }|--|| MedCollection : ""
     MedMaster {
         int id PK
         string name
-        string kana
         string unit
     }
 
