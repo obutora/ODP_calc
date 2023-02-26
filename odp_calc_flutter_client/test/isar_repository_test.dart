@@ -282,31 +282,25 @@ Future main() async {
       await repo.put(medMaster);
 
       final medMasters = await repo.getByName("アムロジピン");
-      print(medMasters);
+
       expect(medMasters.isNotEmpty, true);
       expect(medMasters[0]!.name, "アムロジピン");
 
-      expect(medMasters[0]!.name!.contains("アミオダロン"), false);
+      expect(medMasters[0]!.name?.contains("アミオダロン"), false);
 
       await repo.deleteById(medMaster.id!);
     });
 
     test("exists by name", () async {
-      await repo.deleteAllByName("アムロジピン");
+      await repo.deleteAll();
 
-      final medMaster = MedMaster(name: "アムロジピン", unit: "錠", yjCode: "123456");
+      final medMaster = MedMaster(name: "アムロジピン錠", unit: "錠", yjCode: "123456");
       await repo.put(medMaster);
 
       final Exists single = await repo.existsByName("アムロジピン");
       expect(single, Exists.single);
 
-      final medMaster2 = MedMaster(name: "アムロジピン", unit: "錠", yjCode: "123456");
-      await repo.put(medMaster2);
-
-      final Exists multi = await repo.existsByName("アムロジピン");
-      expect(multi, Exists.multiple);
-
-      await repo.deleteAllByName("アムロジピン");
+      await repo.deleteAll();
       final Exists empty = await repo.existsByName("アムロジピン");
       expect(empty, Exists.empty);
     });

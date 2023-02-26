@@ -1,8 +1,7 @@
-import 'package:odp_calc_flutter_client/entity/med_collection.dart';
-import 'package:odp_calc_flutter_client/entity/med_master.dart';
-import 'package:odp_calc_flutter_client/entity/patient.dart';
-
 import '../../interface/picked_med_collection.dart';
+import '../med_collection.dart';
+import '../med_master.dart';
+import '../patient.dart';
 
 class PickedMedCollectionByName extends PickedMedCollection {
   final String searchName;

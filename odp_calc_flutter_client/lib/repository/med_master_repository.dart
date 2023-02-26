@@ -1,7 +1,7 @@
 import 'package:isar/isar.dart';
-import 'package:odp_calc_flutter_client/entity/enum/exists.dart';
 
 import '../const.dart';
+import '../entity/enum/exists.dart';
 import '../entity/med_master.dart';
 import '../interface/isar_repository_interface.dart';
 import 'isar.dart';
@@ -15,6 +15,10 @@ class MedMasterRepository implements IsarRepositoryInterface<MedMaster> {
 
     log.v('get all medMasters length : ${getAll.length}');
     return getAll;
+  }
+
+  Future<List<int?>> getAllIds() async {
+    return await medMasters.where().idProperty().findAll();
   }
 
   @override
@@ -33,6 +37,37 @@ class MedMasterRepository implements IsarRepositoryInterface<MedMaster> {
     log.v('put : $medMaster');
 
     return id;
+  }
+
+  Future putAll(List<MedMaster> medMasters) async {
+    await IsarRepository.isar.writeTxn(() async {
+      return await this.medMasters.putAll(medMasters);
+    });
+    log.v('putAll : ${medMasters.length} masters.');
+  }
+
+  Future upsert(List<MedMaster> medMasters) async {
+    int putCount = 0;
+    int throwCount = 0;
+
+    List<MedMaster> needPutMasters = [];
+
+    for (MedMaster master in medMasters) {
+      final exist = await existsByName(master.name!, isStrict: true);
+
+      if (exist == Exists.empty) {
+        needPutMasters.add(master);
+        putCount++;
+      } else {
+        throwCount++;
+      }
+    }
+
+    if (needPutMasters.isNotEmpty) {
+      await putAll(needPutMasters);
+    }
+
+    log.v('upsert : put $putCount, throw $throwCount');
   }
 
   @override
@@ -55,15 +90,17 @@ class MedMasterRepository implements IsarRepositoryInterface<MedMaster> {
   @override
   Future<bool> isExistById(int id) async {
     final isExist = await medMasters.where().idEqualTo(id).isNotEmpty();
-
-    log.v('isExist : $isExist');
     return isExist;
   }
 
-  Future<Exists> existsByName(String name) async {
-    final count = await medMasters.filter().nameContains(name).count();
+  Future<Exists> existsByName(String name, {isStrict = false}) async {
+    late int count;
 
-    log.v('existsByName : $count');
+    if (isStrict == true) {
+      count = await medMasters.where().nameEqualTo(name).count();
+    } else {
+      count = await medMasters.filter().nameContains(name).count();
+    }
 
     if (count == 0) {
       return Exists.empty;
