@@ -105,6 +105,8 @@ Patient }|--|| MedCollection : ""
         int id PK
         string name
         string unit
+        List-String gs1CodeList
+        bool isUsing
     }
 
 ```
