@@ -47,7 +47,7 @@ class MainFrame extends StatelessWidget {
       ),
       backgroundColor: kWhite,
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: children,

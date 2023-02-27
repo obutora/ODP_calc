@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:window_size/window_size.dart';
 
+import 'const.dart';
 import 'repository/isar.dart';
-import 'screen/home_screen.dart';
+import 'router/router.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,13 +27,14 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'ODP calc',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        fontFamily: 'NotoSansJP',
-        primarySwatch: Colors.blue,
-      ),
-      home: const HomeScreen(),
+          fontFamily: 'NotoSansJP',
+          colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue)
+              .copyWith(background: kWhite)),
+      routerConfig: router,
     );
   }
 }
