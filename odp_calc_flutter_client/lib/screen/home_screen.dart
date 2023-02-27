@@ -3,10 +3,10 @@ import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 
 import '../const.dart';
-import '../widget/button/search_button.dart';
 import '../widget/checkbox/search_checkbox_group.dart';
 import '../widget/frame/main_frame.dart';
 import '../widget/text/description_list.dart';
+import '../widget/text_field/search_input_field.dart';
 import '../widget/upcert_med_master_button.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -20,7 +20,15 @@ class HomeScreen extends StatelessWidget {
       children: [
         const SearchCheckBoxGroup(),
         const SizedBox(height: 12),
-        const SearchButton(),
+        SearchInputField(
+          hintText: '患者名を入力してください',
+          onChanged: (value) {
+            // print(value);
+          },
+          onPressed: () {
+            // print('tap search button');
+          },
+        ),
         const Padding(
           padding: EdgeInsets.only(top: 8),
           child: DescriptionList(

@@ -2,11 +2,19 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
 import '../../const.dart';
+import '../style/search_input_decoration.dart';
 
-class SearchButton extends StatelessWidget {
-  const SearchButton({
+class SearchInputField extends StatelessWidget {
+  const SearchInputField({
     super.key,
+    required this.onPressed,
+    required this.onChanged,
+    required this.hintText,
   });
+
+  final Function() onPressed;
+  final Function(String) onChanged;
+  final String hintText;
 
   @override
   Widget build(BuildContext context) {
@@ -15,29 +23,19 @@ class SearchButton extends StatelessWidget {
         SizedBox(
           width: 570,
           child: TextField(
-              cursorColor: kGreen,
-              style: kTextSearchBox,
-              decoration: InputDecoration(
-                focusColor: kGreen,
-                hintText: '患者名を入力してください',
-                hintStyle: kTextSearchBox.copyWith(
-                    color: kGreen, fontWeight: FontWeight.w400),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(color: kGreen, width: 1.5),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                fillColor: kGreen,
-                focusedBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(color: kGreen, width: 3),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              )),
+            cursorColor: kGreen,
+            style: kTextSearchBox,
+            decoration: searchInputDecoration(
+              hintText: hintText,
+            ),
+            onChanged: onChanged,
+          ),
         ),
         const SizedBox(width: 8),
         SizedBox(
           height: 60,
           child: ElevatedButton.icon(
-            onPressed: () {},
+            onPressed: onPressed,
             style: ElevatedButton.styleFrom(
               foregroundColor: kWhite,
               backgroundColor: kGreen,
