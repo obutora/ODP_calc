@@ -17,19 +17,19 @@ const MedMasterSchema = CollectionSchema(
   name: r'MedMaster',
   id: 1316428820031672268,
   properties: {
-    r'name': PropertySchema(
+    r'gs1CodeList': PropertySchema(
       id: 0,
+      name: r'gs1CodeList',
+      type: IsarType.longList,
+    ),
+    r'name': PropertySchema(
+      id: 1,
       name: r'name',
       type: IsarType.string,
     ),
     r'unit': PropertySchema(
-      id: 1,
-      name: r'unit',
-      type: IsarType.string,
-    ),
-    r'yjCode': PropertySchema(
       id: 2,
-      name: r'yjCode',
+      name: r'unit',
       type: IsarType.string,
     )
   },
@@ -68,6 +68,12 @@ int _medMasterEstimateSize(
 ) {
   var bytesCount = offsets.last;
   {
+    final value = object.gs1CodeList;
+    if (value != null) {
+      bytesCount += 3 + value.length * 8;
+    }
+  }
+  {
     final value = object.name;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -75,12 +81,6 @@ int _medMasterEstimateSize(
   }
   {
     final value = object.unit;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
-  {
-    final value = object.yjCode;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
     }
@@ -94,9 +94,9 @@ void _medMasterSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeString(offsets[0], object.name);
-  writer.writeString(offsets[1], object.unit);
-  writer.writeString(offsets[2], object.yjCode);
+  writer.writeLongList(offsets[0], object.gs1CodeList);
+  writer.writeString(offsets[1], object.name);
+  writer.writeString(offsets[2], object.unit);
 }
 
 MedMaster _medMasterDeserialize(
@@ -106,10 +106,10 @@ MedMaster _medMasterDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = MedMaster(
+    gs1CodeList: reader.readLongList(offsets[0]),
     id: id,
-    name: reader.readStringOrNull(offsets[0]),
-    unit: reader.readStringOrNull(offsets[1]),
-    yjCode: reader.readStringOrNull(offsets[2]),
+    name: reader.readStringOrNull(offsets[1]),
+    unit: reader.readStringOrNull(offsets[2]),
   );
   return object;
 }
@@ -122,7 +122,7 @@ P _medMasterDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readLongList(offset)) as P;
     case 1:
       return (reader.readStringOrNull(offset)) as P;
     case 2:
@@ -342,6 +342,169 @@ extension MedMasterQueryWhere
 
 extension MedMasterQueryFilter
     on QueryBuilder<MedMaster, MedMaster, QFilterCondition> {
+  QueryBuilder<MedMaster, MedMaster, QAfterFilterCondition>
+      gs1CodeListIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'gs1CodeList',
+      ));
+    });
+  }
+
+  QueryBuilder<MedMaster, MedMaster, QAfterFilterCondition>
+      gs1CodeListIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'gs1CodeList',
+      ));
+    });
+  }
+
+  QueryBuilder<MedMaster, MedMaster, QAfterFilterCondition>
+      gs1CodeListElementEqualTo(int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'gs1CodeList',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<MedMaster, MedMaster, QAfterFilterCondition>
+      gs1CodeListElementGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'gs1CodeList',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<MedMaster, MedMaster, QAfterFilterCondition>
+      gs1CodeListElementLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'gs1CodeList',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<MedMaster, MedMaster, QAfterFilterCondition>
+      gs1CodeListElementBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'gs1CodeList',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<MedMaster, MedMaster, QAfterFilterCondition>
+      gs1CodeListLengthEqualTo(int length) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'gs1CodeList',
+        length,
+        true,
+        length,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<MedMaster, MedMaster, QAfterFilterCondition>
+      gs1CodeListIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'gs1CodeList',
+        0,
+        true,
+        0,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<MedMaster, MedMaster, QAfterFilterCondition>
+      gs1CodeListIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'gs1CodeList',
+        0,
+        false,
+        999999,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<MedMaster, MedMaster, QAfterFilterCondition>
+      gs1CodeListLengthLessThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'gs1CodeList',
+        0,
+        true,
+        length,
+        include,
+      );
+    });
+  }
+
+  QueryBuilder<MedMaster, MedMaster, QAfterFilterCondition>
+      gs1CodeListLengthGreaterThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'gs1CodeList',
+        length,
+        include,
+        999999,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<MedMaster, MedMaster, QAfterFilterCondition>
+      gs1CodeListLengthBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'gs1CodeList',
+        lower,
+        includeLower,
+        upper,
+        includeUpper,
+      );
+    });
+  }
+
   QueryBuilder<MedMaster, MedMaster, QAfterFilterCondition> idIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -702,152 +865,6 @@ extension MedMasterQueryFilter
       ));
     });
   }
-
-  QueryBuilder<MedMaster, MedMaster, QAfterFilterCondition> yjCodeIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'yjCode',
-      ));
-    });
-  }
-
-  QueryBuilder<MedMaster, MedMaster, QAfterFilterCondition> yjCodeIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'yjCode',
-      ));
-    });
-  }
-
-  QueryBuilder<MedMaster, MedMaster, QAfterFilterCondition> yjCodeEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'yjCode',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<MedMaster, MedMaster, QAfterFilterCondition> yjCodeGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'yjCode',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<MedMaster, MedMaster, QAfterFilterCondition> yjCodeLessThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'yjCode',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<MedMaster, MedMaster, QAfterFilterCondition> yjCodeBetween(
-    String? lower,
-    String? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'yjCode',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<MedMaster, MedMaster, QAfterFilterCondition> yjCodeStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'yjCode',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<MedMaster, MedMaster, QAfterFilterCondition> yjCodeEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'yjCode',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<MedMaster, MedMaster, QAfterFilterCondition> yjCodeContains(
-      String value,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'yjCode',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<MedMaster, MedMaster, QAfterFilterCondition> yjCodeMatches(
-      String pattern,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'yjCode',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<MedMaster, MedMaster, QAfterFilterCondition> yjCodeIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'yjCode',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<MedMaster, MedMaster, QAfterFilterCondition> yjCodeIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'yjCode',
-        value: '',
-      ));
-    });
-  }
 }
 
 extension MedMasterQueryObject
@@ -878,18 +895,6 @@ extension MedMasterQuerySortBy on QueryBuilder<MedMaster, MedMaster, QSortBy> {
   QueryBuilder<MedMaster, MedMaster, QAfterSortBy> sortByUnitDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'unit', Sort.desc);
-    });
-  }
-
-  QueryBuilder<MedMaster, MedMaster, QAfterSortBy> sortByYjCode() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'yjCode', Sort.asc);
-    });
-  }
-
-  QueryBuilder<MedMaster, MedMaster, QAfterSortBy> sortByYjCodeDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'yjCode', Sort.desc);
     });
   }
 }
@@ -931,22 +936,16 @@ extension MedMasterQuerySortThenBy
       return query.addSortBy(r'unit', Sort.desc);
     });
   }
-
-  QueryBuilder<MedMaster, MedMaster, QAfterSortBy> thenByYjCode() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'yjCode', Sort.asc);
-    });
-  }
-
-  QueryBuilder<MedMaster, MedMaster, QAfterSortBy> thenByYjCodeDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'yjCode', Sort.desc);
-    });
-  }
 }
 
 extension MedMasterQueryWhereDistinct
     on QueryBuilder<MedMaster, MedMaster, QDistinct> {
+  QueryBuilder<MedMaster, MedMaster, QDistinct> distinctByGs1CodeList() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'gs1CodeList');
+    });
+  }
+
   QueryBuilder<MedMaster, MedMaster, QDistinct> distinctByName(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -960,13 +959,6 @@ extension MedMasterQueryWhereDistinct
       return query.addDistinctBy(r'unit', caseSensitive: caseSensitive);
     });
   }
-
-  QueryBuilder<MedMaster, MedMaster, QDistinct> distinctByYjCode(
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'yjCode', caseSensitive: caseSensitive);
-    });
-  }
 }
 
 extension MedMasterQueryProperty
@@ -974,6 +966,12 @@ extension MedMasterQueryProperty
   QueryBuilder<MedMaster, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
+    });
+  }
+
+  QueryBuilder<MedMaster, List<int>?, QQueryOperations> gs1CodeListProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'gs1CodeList');
     });
   }
 
@@ -986,12 +984,6 @@ extension MedMasterQueryProperty
   QueryBuilder<MedMaster, String?, QQueryOperations> unitProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'unit');
-    });
-  }
-
-  QueryBuilder<MedMaster, String?, QQueryOperations> yjCodeProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'yjCode');
     });
   }
 }

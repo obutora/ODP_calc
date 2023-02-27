@@ -8,16 +8,16 @@ import '../const.dart';
 import '../repository/med_master_repository.dart';
 import '../usecase/med_master_usecase.dart';
 
-class InitMedMaster extends StatefulWidget {
-  const InitMedMaster({
+class UpcertMedMasterButton extends StatefulWidget {
+  const UpcertMedMasterButton({
     super.key,
   });
 
   @override
-  State<InitMedMaster> createState() => _InitMedMasterState();
+  State<UpcertMedMasterButton> createState() => _UpcertMedMasterButtonState();
 }
 
-class _InitMedMasterState extends State<InitMedMaster> {
+class _UpcertMedMasterButtonState extends State<UpcertMedMasterButton> {
   Widget textWidget = const Text('init MedMaster');
 
   @override

@@ -10,23 +10,23 @@ class MedMaster {
   String? name;
 
   String? unit;
-  String? yjCode;
+  List<int>? gs1CodeList;
 
   MedMaster({
     int? id,
     required this.name,
     required this.unit,
-    required this.yjCode,
+    required this.gs1CodeList,
   });
 
   @override
   String toString() {
-    return 'MedMaster{id: $id, name: $name, unit: $unit, yjCode: $yjCode\n';
+    return 'MedMaster{id: $id, name: $name, unit: $unit, gs1CodeList: $gs1CodeList\n';
   }
 
   factory MedMaster.fromJson(Map<String, dynamic> json) => MedMaster(
         name: json['name'],
         unit: json['unit'],
-        yjCode: json['yjCode'],
+        gs1CodeList: json['gs1CodeList'].cast<int>() as List<int>?,
       );
 }

@@ -1,5 +1,3 @@
-import 'package:odp_calc_flutter_client/entity/med_collection.dart';
-
 import '../interface/picked_med_collection.dart';
 
 class PickedMedCollectionUsecase {

@@ -233,7 +233,7 @@ Future main() async {
   // MedMaster ----------------------------------------------------------------
   group("MedMaster: CRUD", () {
     final medMaster =
-        MedMaster(id: 34567, name: "アムロジピン", unit: "錠", yjCode: "123456");
+        MedMaster(id: 34567, name: "アムロジピン", unit: "錠", gs1CodeList: [123456]);
     final repo = MedMasterRepository();
 
     test("put: MedMaster", () async {
@@ -277,8 +277,8 @@ Future main() async {
     });
 
     test("get by name", () async {
-      final medMaster =
-          MedMaster(id: 34567, name: "アムロジピン", unit: "錠", yjCode: "123456");
+      final medMaster = MedMaster(
+          id: 34567, name: "アムロジピン", unit: "錠", gs1CodeList: [123456]);
       await repo.put(medMaster);
 
       final medMasters = await repo.getByName("アムロジピン");
@@ -294,7 +294,8 @@ Future main() async {
     test("exists by name", () async {
       await repo.deleteAll();
 
-      final medMaster = MedMaster(name: "アムロジピン錠", unit: "錠", yjCode: "123456");
+      final medMaster =
+          MedMaster(name: "アムロジピン錠", unit: "錠", gs1CodeList: [123456]);
       await repo.put(medMaster);
 
       final Exists single = await repo.existsByName("アムロジピン");
@@ -307,7 +308,8 @@ Future main() async {
 
     test("getId by name", () async {
       // 初期データを作成して、該当1件のみであることをチェック
-      final medMaster = MedMaster(name: "アムロジピン", unit: "錠", yjCode: "123456");
+      final medMaster =
+          MedMaster(name: "アムロジピン", unit: "錠", gs1CodeList: [123456]);
       final puttedId = await repo.put(medMaster);
       expect(await repo.existsByName("アムロジピン"), Exists.single);
 

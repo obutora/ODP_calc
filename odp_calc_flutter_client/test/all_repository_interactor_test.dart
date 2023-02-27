@@ -34,7 +34,7 @@ Future main() async {
           patientId: 12,
           updateAt: DateTime.now());
 
-      final master = MedMaster(name: 'アムロジピン', unit: '錠', yjCode: '1234');
+      final master = MedMaster(name: 'アムロジピン', unit: '錠', gs1CodeList: [1234]);
 
       final collection = MedCollection(
           patientId: 12, medMasterId: 23, amount: 100, isCollected: false);
@@ -60,7 +60,7 @@ Future main() async {
           updateAt: DateTime.now());
       final int patientId = await patientRepo.put(patient);
 
-      final master = MedMaster(name: 'アムロジピン', unit: '錠', yjCode: '1234');
+      final master = MedMaster(name: 'アムロジピン', unit: '錠', gs1CodeList: [1234]);
       final int medMasterId = await medMasterRepo.put(master);
 
       final collection = MedCollection(
