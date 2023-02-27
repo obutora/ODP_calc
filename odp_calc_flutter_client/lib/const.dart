@@ -25,6 +25,13 @@ const kTextH3 = TextStyle(
   color: kBlack,
 );
 
+const kTextH4 = TextStyle(
+  fontSize: 24,
+  letterSpacing: 1.6,
+  fontWeight: FontWeight.bold,
+  color: kBlack,
+);
+
 const kTextSearchBox = TextStyle(
   fontSize: 20,
   letterSpacing: 1.6,

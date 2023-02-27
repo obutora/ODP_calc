@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 import '../const.dart';
 import '../widget/button/search_button.dart';
 import '../widget/checkbox/search_checkbox_group.dart';
 import '../widget/text/description_list.dart';
+import '../widget/upcert_med_master_button.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -19,17 +21,14 @@ class HomeScreen extends StatelessWidget {
           style: kTextTitle,
         ),
       ),
+      backgroundColor: kWhite,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Text('検索', style: kTextTitle),
-
             const SearchCheckBoxGroup(),
-
             const SizedBox(height: 12),
-
             const SearchButton(),
             const Padding(
               padding: EdgeInsets.only(top: 8),
@@ -41,14 +40,12 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 16),
-
             const SizedBox(height: 28),
-
             Expanded(
                 child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // NOTE: 左のグリッド
                 Expanded(
                   flex: 1,
                   child: Column(
@@ -62,43 +59,109 @@ class HomeScreen extends StatelessWidget {
                       SizedBox(
                         height: 12,
                       ),
-                      Placeholder(fallbackHeight: 299),
+                      Flexible(
+                        child: SizedBox(
+                          height: 399,
+                          child: UpcertMedMasterButton(),
+                        ),
+                      ),
                     ],
                   ),
                 ),
                 const SizedBox(width: 12),
+                // NOTE: 中央のグリッド
                 Expanded(
                   flex: 1,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text('患者編集', style: kTextH3),
-                      Text(
-                        '現在の集薬状況のまとめ',
+                    children: [
+                      const Text('患者編集', style: kTextH3),
+                      const Text(
+                        '患者マスタの確認と編集ができます。',
                         style: kTextDescription,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 12,
                       ),
-                      Placeholder(fallbackHeight: 299),
+                      SizedBox(
+                          height: 200,
+                          child: Center(
+                              child: Lottie.asset(
+                                  'assets/animation/patient.json'))),
+                      const SizedBox(height: 16),
+                      Center(
+                        child: SizedBox(
+                          width: 280,
+                          height: 64,
+                          child: OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                              // backgroundColor: kGreen,
+                              side: const BorderSide(color: kGreen, width: 3),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                            onPressed: () {
+                              Navigator.pushNamed(context, '/med_master');
+                            },
+                            child: Text(
+                              '患者マスタ編集',
+                              style: kTextH4.copyWith(
+                                  color: kGreen, letterSpacing: 2),
+                            ),
+                          ),
+                        ),
+                      )
                     ],
                   ),
                 ),
                 const SizedBox(width: 12),
+                // NOTE: 右のグリッド
                 Expanded(
                   flex: 1,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text('薬編集', style: kTextH3),
-                      Text(
-                        '現在の集薬状況のまとめ',
+                    children: [
+                      const Text('薬編集', style: kTextH3),
+                      const Text(
+                        '薬マスタの確認と編集ができます。',
                         style: kTextDescription,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 12,
                       ),
-                      Placeholder(fallbackHeight: 299),
+                      SizedBox(
+                          height: 200,
+                          child: Center(
+                              child: Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child:
+                                Lottie.asset('assets/animation/medicine.json'),
+                          ))),
+                      const SizedBox(height: 16),
+                      Center(
+                        child: SizedBox(
+                          width: 280,
+                          height: 64,
+                          child: OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                              // backgroundColor: kGreen,
+                              side: const BorderSide(color: kBlue, width: 3),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                            onPressed: () {
+                              Navigator.pushNamed(context, '/med_master');
+                            },
+                            child: Text(
+                              '薬マスタ編集',
+                              style: kTextH4.copyWith(
+                                  color: kBlue, letterSpacing: 2),
+                            ),
+                          ),
+                        ),
+                      )
                     ],
                   ),
                 ),
