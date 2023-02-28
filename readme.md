@@ -55,6 +55,25 @@ flowchart TD
 ラジオボタンの判定 -- 薬品名で検索 --> 患者リスト確認画面に推移
 ```
 
+### 検索ワード判定フロー
+```mermaid
+flowchart TD
+検索ワード --> int
+検索ワード --> string
+int -- 16桁 --> gs1[医薬品GS-1]
+gs1 --> gs1でMedCollectionを検索 --> MedPickCollection
+int -- x桁 --> 患者ID
+患者ID --> 患者IDでMedCollectionを検索
+string --> radio{{患者or薬判定用ラジオボタン}}
+radio --> 患者名でMedCollectionを検索
+radio --> 薬名でMedCollectionを検索 --> MedPickCollection
+
+```
+ - ^[\u4E00-\u9FFF]+$
+   - 👆 で漢字のみを抽出できるが、名前と医薬品の判定は不可能と判断
+   - カタカナ含む患者名と、漢方を区別できないため。
+
+
 ### 一括処理
  - 一括でisCollectをfalseにする
  - 一括でバーコードを印刷する
