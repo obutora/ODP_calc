@@ -329,5 +329,20 @@ Future main() async {
 
       await repo.deleteById(puttedId);
     });
+
+    test("get by gs1", () async {
+      final medMaster = MedMaster(
+          id: 34567, name: "アムロジピン", unit: "錠", gs1CodeList: [123456, 282]);
+      final id = await repo.put(medMaster);
+
+      final medMasters = await repo.getByGs1(123456);
+
+      expect(medMasters.isNotEmpty, true);
+      expect(medMasters[0]!.name, "アムロジピン");
+
+      expect(medMasters[0]!.name?.contains("アミオダロン"), false);
+
+      await repo.deleteById(id);
+    });
   });
 }

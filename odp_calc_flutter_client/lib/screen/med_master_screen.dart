@@ -1,16 +1,22 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../const.dart';
+import '../provider/form/input/search_med_master_input_state_provider.dart';
+import '../provider/medmaster/search_med_master_provider.dart';
 import '../widget/card/med_master_card.dart';
 import '../widget/frame/main_frame.dart';
 import '../widget/text_field/search_input_field.dart';
 
-class MedMasterScreen extends StatelessWidget {
+class MedMasterScreen extends ConsumerWidget {
   const MedMasterScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    // final searchWord = ref.watch(searchMedMasterInputStateProvider);
+    final searchedMedMaster = ref.watch(searhMedMasterProvider);
+
     return MainFrame(
       title: '薬マスタ編集',
       titleDescription: '薬マスタを編集します。',
@@ -21,7 +27,10 @@ class MedMasterScreen extends StatelessWidget {
         ),
         SearchInputField(
             onPressed: () {},
-            onChanged: (e) {},
+            onChanged: (e) {
+              // StateProvider に入力された文字列を入れる
+              ref.read(searchMedMasterInputStateProvider.notifier).state = e;
+            },
             hintText: 'GS-1コード、または医薬品名を入力してください。'),
         const SizedBox(
           height: 20,
@@ -33,14 +42,13 @@ class MedMasterScreen extends StatelessWidget {
           ),
           height: 380,
           width: double.infinity,
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-
-            // NOTE: DB とやり取りしてデータを入手する
-            child: FutureBuilder(
-              builder: (context, snapshot) {
-                return GridView.builder(
-                  itemCount: 20,
+          child: searchedMedMaster.when(
+            data: (medMasterList) {
+              print(medMasterList);
+              return Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: GridView.builder(
+                  itemCount: medMasterList.length,
                   physics: const ScrollPhysics(),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
@@ -49,15 +57,26 @@ class MedMasterScreen extends StatelessWidget {
                     childAspectRatio: 4,
                   ),
                   itemBuilder: (context, index) {
+                    final master = medMasterList[index];
                     return MedMasterCard(
                       // TODO: NEED TO CHANGE - Fetched Data
-                      name: 'アムヴトラ皮下注２５ｍｇ',
+                      name: master!.name!,
                       onPressed: () {},
                     );
                   },
-                );
-              },
+                ),
+              );
+            },
+            error: (err, stack) => Container(
+              color: kGreen,
+              child: Center(
+                child: Text(
+                  err.toString(),
+                  style: kTextSearchBox,
+                ),
+              ),
             ),
+            loading: () => const CircularProgressIndicator(),
           ),
         ),
         const SizedBox(

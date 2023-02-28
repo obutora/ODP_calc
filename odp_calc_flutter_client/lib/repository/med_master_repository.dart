@@ -112,10 +112,19 @@ class MedMasterRepository implements IsarRepositoryInterface<MedMaster> {
   }
 
   Future<List<MedMaster?>> getByName(String name) async {
-    final getByName = await medMasters.filter().nameContains(name).findAll();
+    final getByName =
+        await medMasters.filter().nameContains(name).sortByIsUsed().findAll();
 
     log.v('getByName : $getByName');
     return getByName;
+  }
+
+  Future<List<MedMaster?>> getByGs1(int gs1) async {
+    final getBtGs1 =
+        await medMasters.filter().gs1CodeListElementEqualTo(gs1).findAll();
+
+    log.v('getBtGs1 : $getBtGs1');
+    return getBtGs1;
   }
 
   Future<List<int?>> getIdListByName(String name) async {
