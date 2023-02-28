@@ -61,12 +61,12 @@ flowchart TD
 検索ワード --> int
 検索ワード --> string
 int -- 16桁 --> gs1[医薬品GS-1]
-gs1 --> gs1でMedCollectionを検索
+gs1 --> gs1でMedCollectionを検索 --> MedPickCollection
 int -- x桁 --> 患者ID
 患者ID --> 患者IDでMedCollectionを検索
 string --> radio{{患者or薬判定用ラジオボタン}}
 radio --> 患者名でMedCollectionを検索
-radio --> 薬名でMedCollectionを検索
+radio --> 薬名でMedCollectionを検索 --> MedPickCollection
 
 ```
  - ^[\u4E00-\u9FFF]+$
