@@ -10,6 +10,8 @@ const kBlue = Color(0xFF0086C2);
 const kGreen = Color(0xFF84C6B5);
 const kOrange = Color(0xFFFF836B);
 
+const kGrey20 = Color(0xFFEFEFEF);
+
 // test style
 const kTextTitle = TextStyle(
   fontSize: 40,
@@ -43,5 +45,12 @@ const kTextDescription = TextStyle(
   fontSize: 16,
   letterSpacing: 1.6,
   fontWeight: FontWeight.normal,
+  color: kBlack,
+);
+
+const kTextDescription2 = TextStyle(
+  fontSize: 12,
+  letterSpacing: 1.2,
+  fontWeight: FontWeight.w400,
   color: kBlack,
 );
