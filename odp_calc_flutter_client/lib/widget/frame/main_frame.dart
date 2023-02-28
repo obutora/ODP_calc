@@ -46,11 +46,20 @@ class MainFrame extends StatelessWidget {
         actions: path != '/' ? [const BackScreenButton()] : [],
       ),
       backgroundColor: kWhite,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: children,
+      body: ConstrainedBox(
+        constraints: const BoxConstraints(
+          maxWidth: 1024,
+          maxHeight: 1024,
+        ),
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: children,
+            ),
+          ),
         ),
       ),
     );

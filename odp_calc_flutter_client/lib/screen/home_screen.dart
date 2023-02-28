@@ -40,130 +40,134 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 28),
-        Expanded(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // NOTE: 左のグリッド
-              Expanded(
-                flex: 1,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text('ステータス', style: kTextH3),
-                    Text(
-                      '現在の集薬状況のまとめ',
-                      style: kTextDescription,
-                    ),
-                    SizedBox(
-                      height: 12,
-                    ),
-                    Flexible(
-                      child: SizedBox(
-                        height: 399,
-                        child: UpcertMedMasterButton(),
+        ConstrainedBox(
+          constraints: const BoxConstraints(maxHeight: 380, maxWidth: 1024),
+          child: Expanded(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // NOTE: 左のグリッド
+                Expanded(
+                  flex: 1,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      Text('ステータス', style: kTextH3),
+                      Text(
+                        '現在の集薬状況のまとめ',
+                        style: kTextDescription,
                       ),
-                    ),
-                  ],
+                      SizedBox(
+                        height: 12,
+                      ),
+                      Flexible(
+                        child: SizedBox(
+                          height: 200,
+                          child: UpcertMedMasterButton(),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              const SizedBox(width: 12),
-              // NOTE: 中央のグリッド
-              Expanded(
-                flex: 1,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('患者編集', style: kTextH3),
-                    const Text(
-                      '患者マスタの確認と編集ができます。',
-                      style: kTextDescription,
-                    ),
-                    const SizedBox(
-                      height: 12,
-                    ),
-                    SizedBox(
-                        height: 200,
-                        child: Center(
+                const SizedBox(width: 12),
+                // NOTE: 中央のグリッド
+                Expanded(
+                  flex: 1,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('患者登録', style: kTextH3),
+                      const Text(
+                        '新しく患者を登録できます。',
+                        style: kTextDescription,
+                      ),
+                      const SizedBox(
+                        height: 12,
+                      ),
+                      SizedBox(
+                          height: 200,
+                          child: Center(
+                              child: Lottie.asset(
+                                  'assets/animation/patient.json'))),
+                      const SizedBox(height: 16),
+                      Center(
+                        child: SizedBox(
+                          width: 280,
+                          height: 64,
+                          child: OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                              // backgroundColor: kGreen,
+                              side: const BorderSide(color: kGreen, width: 3),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                            onPressed: () {
+                              context.push('/addPatient');
+                            },
+                            child: Text(
+                              '患者を登録する',
+                              style: kTextH4.copyWith(
+                                  color: kGreen, letterSpacing: 2),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 12),
+                // NOTE: 右のグリッド
+                Expanded(
+                  flex: 1,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('薬編集', style: kTextH3),
+                      const Text(
+                        '薬マスタの確認と編集ができます。',
+                        style: kTextDescription,
+                      ),
+                      const SizedBox(
+                        height: 12,
+                      ),
+                      SizedBox(
+                          height: 200,
+                          child: Center(
+                              child: Padding(
+                            padding: const EdgeInsets.all(20.0),
                             child:
-                                Lottie.asset('assets/animation/patient.json'))),
-                    const SizedBox(height: 16),
-                    Center(
-                      child: SizedBox(
-                        width: 280,
-                        height: 64,
-                        child: OutlinedButton(
-                          style: OutlinedButton.styleFrom(
-                            // backgroundColor: kGreen,
-                            side: const BorderSide(color: kGreen, width: 3),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
+                                Lottie.asset('assets/animation/medicine.json'),
+                          ))),
+                      const SizedBox(height: 16),
+                      Center(
+                        child: SizedBox(
+                          width: 280,
+                          height: 64,
+                          child: OutlinedButton(
+                            style: OutlinedButton.styleFrom(
+                              // backgroundColor: kGreen,
+                              side: const BorderSide(color: kBlue, width: 3),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                            onPressed: () {
+                              context.push('/medMaster');
+                            },
+                            child: Text(
+                              '薬マスタを編集する',
+                              style: kTextH4.copyWith(
+                                  color: kBlue, letterSpacing: 2),
                             ),
                           ),
-                          onPressed: () {
-                            Navigator.pushNamed(context, '/med_master');
-                          },
-                          child: Text(
-                            '患者マスタ編集',
-                            style: kTextH4.copyWith(
-                                color: kGreen, letterSpacing: 2),
-                          ),
                         ),
-                      ),
-                    )
-                  ],
+                      )
+                    ],
+                  ),
                 ),
-              ),
-              const SizedBox(width: 12),
-              // NOTE: 右のグリッド
-              Expanded(
-                flex: 1,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('薬編集', style: kTextH3),
-                    const Text(
-                      '薬マスタの確認と編集ができます。',
-                      style: kTextDescription,
-                    ),
-                    const SizedBox(
-                      height: 12,
-                    ),
-                    SizedBox(
-                        height: 200,
-                        child: Center(
-                            child: Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: Lottie.asset('assets/animation/medicine.json'),
-                        ))),
-                    const SizedBox(height: 16),
-                    Center(
-                      child: SizedBox(
-                        width: 280,
-                        height: 64,
-                        child: OutlinedButton(
-                          style: OutlinedButton.styleFrom(
-                            // backgroundColor: kGreen,
-                            side: const BorderSide(color: kBlue, width: 3),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                          onPressed: () {
-                            context.push('/medMaster');
-                          },
-                          child: Text(
-                            '薬マスタ編集',
-                            style: kTextH4.copyWith(
-                                color: kBlue, letterSpacing: 2),
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ],
