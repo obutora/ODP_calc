@@ -44,7 +44,6 @@ class MedMasterScreen extends ConsumerWidget {
           width: double.infinity,
           child: searchedMedMaster.when(
             data: (medMasterList) {
-              print(medMasterList);
               return Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: GridView.builder(
@@ -59,7 +58,7 @@ class MedMasterScreen extends ConsumerWidget {
                   itemBuilder: (context, index) {
                     final master = medMasterList[index];
                     return MedMasterCard(
-                      // TODO: NEED TO CHANGE - Fetched Data
+                      // TODO: NEED TO CHANGE - Handle data
                       name: master!.name!,
                       onPressed: () {},
                     );

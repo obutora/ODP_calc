@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 
+import '../screen/add_patient_screen.dart';
 import '../screen/home_screen.dart';
 import '../screen/med_master_screen.dart';
 
@@ -12,11 +13,10 @@ final router = GoRouter(routes: [
     path: '/medMaster',
     builder: (context, state) => const MedMasterScreen(),
   ),
-  // GoRoute(
-  //   path: '/searchPatient',
-  //   builder: (context, state) => PatientDetailScreen(
-  //     id: state.params['id']!,
-  //   ),
+  GoRoute(
+    path: '/addPatient',
+    builder: (context, state) => const AddPatientScreen(),
+  )
   // ),
   // GoRoute(
   //   path: '/searchMed',
