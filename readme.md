@@ -55,6 +55,16 @@ flowchart TD
 ラジオボタンの判定 -- 薬品名で検索 --> 患者リスト確認画面に推移
 ```
 
+### 検索ワード判定フロー
+```mermaid
+flowchart TD
+検索ワード --> int
+検索ワード --> string
+int -- 16桁 --> 医薬品GS-1
+int -- x桁 --> 患者ID
+```
+
+
 ### 一括処理
  - 一括でisCollectをfalseにする
  - 一括でバーコードを印刷する
