@@ -1,7 +1,6 @@
-import 'package:odp_calc_flutter_client/const.dart';
-import 'package:odp_calc_flutter_client/entity/enum/exists.dart';
-import 'package:odp_calc_flutter_client/entity/picked_med_collection/by_name.dart';
-
+import '../../const.dart';
+import '../../entity/enum/exists.dart';
+import '../../entity/picked_med_collection/picked_med_collection.dart';
 import '../../repository/med_collection_repository.dart';
 import '../../repository/med_master_repository.dart';
 import '../../repository/patient_repository.dart';
@@ -11,7 +10,7 @@ class AllRepositoryInteractor {
   final medCollectionRepo = MedCollectionRepository();
   final patientRepo = PatientRepository();
 
-  Future<List<PickedMedCollectionByName?>> getPickedMedCollectionByMedName(
+  Future<List<PickedMedCollection?>> getPickedMedCollectionByMedName(
       String medName) async {
     // 1.薬品名の重複チェック
     // 重複ありの場合はエラー
@@ -33,13 +32,13 @@ class AllRepositoryInteractor {
 
       log.v('medCollections: $medCollections');
 
-      final pickedMedCollectionList = <PickedMedCollectionByName?>[];
+      final pickedMedCollectionList = <PickedMedCollection?>[];
 
       for (var medCollection in medCollections) {
         final patient = await patientRepo.getById(medCollection.patientId!);
         final master = await medMasterRepo.getById(medCollection.medMasterId!);
 
-        final pickedMedCollection = PickedMedCollectionByName.create(
+        final pickedMedCollection = PickedMedCollection.create(
             searchName: medName,
             patient: patient!,
             collection: medCollection,

@@ -2,9 +2,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:odp_calc_flutter_client/entity/med_collection.dart';
 import 'package:odp_calc_flutter_client/entity/med_master.dart';
 import 'package:odp_calc_flutter_client/entity/patient.dart';
-import 'package:odp_calc_flutter_client/entity/picked_med_collection/by_name.dart';
+import 'package:odp_calc_flutter_client/entity/picked_med_collection/picked_med_collection.dart';
 import 'package:odp_calc_flutter_client/interactor/repository_interactor/all_repository_interactor.dart';
-import 'package:odp_calc_flutter_client/interface/picked_med_collection.dart';
 import 'package:odp_calc_flutter_client/repository/isar.dart';
 import 'package:odp_calc_flutter_client/repository/med_collection_repository.dart';
 import 'package:odp_calc_flutter_client/repository/med_master_repository.dart';
@@ -39,13 +38,12 @@ Future main() async {
       final collection = MedCollection(
           patientId: 12, medMasterId: 23, amount: 100, isCollected: false);
 
-      final pickedByName = PickedMedCollectionByName.create(
+      final pickedByName = PickedMedCollection.create(
           searchName: 'search',
           patient: patient,
           collection: collection,
           master: master);
 
-      expect(pickedByName.searchName, 'search');
       expect(pickedByName.medName, 'アムロジピン');
       expect(pickedByName.amount, 100);
     });
