@@ -22,13 +22,18 @@ const MedMasterSchema = CollectionSchema(
       name: r'gs1CodeList',
       type: IsarType.longList,
     ),
-    r'name': PropertySchema(
+    r'isUsed': PropertySchema(
       id: 1,
+      name: r'isUsed',
+      type: IsarType.bool,
+    ),
+    r'name': PropertySchema(
+      id: 2,
       name: r'name',
       type: IsarType.string,
     ),
     r'unit': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'unit',
       type: IsarType.string,
     )
@@ -95,8 +100,9 @@ void _medMasterSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeLongList(offsets[0], object.gs1CodeList);
-  writer.writeString(offsets[1], object.name);
-  writer.writeString(offsets[2], object.unit);
+  writer.writeBool(offsets[1], object.isUsed);
+  writer.writeString(offsets[2], object.name);
+  writer.writeString(offsets[3], object.unit);
 }
 
 MedMaster _medMasterDeserialize(
@@ -108,8 +114,9 @@ MedMaster _medMasterDeserialize(
   final object = MedMaster(
     gs1CodeList: reader.readLongList(offsets[0]),
     id: id,
-    name: reader.readStringOrNull(offsets[1]),
-    unit: reader.readStringOrNull(offsets[2]),
+    isUsed: reader.readBoolOrNull(offsets[1]) ?? false,
+    name: reader.readStringOrNull(offsets[2]),
+    unit: reader.readStringOrNull(offsets[3]),
   );
   return object;
 }
@@ -124,8 +131,10 @@ P _medMasterDeserializeProp<P>(
     case 0:
       return (reader.readLongList(offset)) as P;
     case 1:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readBoolOrNull(offset) ?? false) as P;
     case 2:
+      return (reader.readStringOrNull(offset)) as P;
+    case 3:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -574,6 +583,16 @@ extension MedMasterQueryFilter
     });
   }
 
+  QueryBuilder<MedMaster, MedMaster, QAfterFilterCondition> isUsedEqualTo(
+      bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'isUsed',
+        value: value,
+      ));
+    });
+  }
+
   QueryBuilder<MedMaster, MedMaster, QAfterFilterCondition> nameIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -874,6 +893,18 @@ extension MedMasterQueryLinks
     on QueryBuilder<MedMaster, MedMaster, QFilterCondition> {}
 
 extension MedMasterQuerySortBy on QueryBuilder<MedMaster, MedMaster, QSortBy> {
+  QueryBuilder<MedMaster, MedMaster, QAfterSortBy> sortByIsUsed() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isUsed', Sort.asc);
+    });
+  }
+
+  QueryBuilder<MedMaster, MedMaster, QAfterSortBy> sortByIsUsedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isUsed', Sort.desc);
+    });
+  }
+
   QueryBuilder<MedMaster, MedMaster, QAfterSortBy> sortByName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.asc);
@@ -913,6 +944,18 @@ extension MedMasterQuerySortThenBy
     });
   }
 
+  QueryBuilder<MedMaster, MedMaster, QAfterSortBy> thenByIsUsed() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isUsed', Sort.asc);
+    });
+  }
+
+  QueryBuilder<MedMaster, MedMaster, QAfterSortBy> thenByIsUsedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isUsed', Sort.desc);
+    });
+  }
+
   QueryBuilder<MedMaster, MedMaster, QAfterSortBy> thenByName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.asc);
@@ -946,6 +989,12 @@ extension MedMasterQueryWhereDistinct
     });
   }
 
+  QueryBuilder<MedMaster, MedMaster, QDistinct> distinctByIsUsed() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'isUsed');
+    });
+  }
+
   QueryBuilder<MedMaster, MedMaster, QDistinct> distinctByName(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -972,6 +1021,12 @@ extension MedMasterQueryProperty
   QueryBuilder<MedMaster, List<int>?, QQueryOperations> gs1CodeListProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'gs1CodeList');
+    });
+  }
+
+  QueryBuilder<MedMaster, bool, QQueryOperations> isUsedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'isUsed');
     });
   }
 

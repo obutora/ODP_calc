@@ -8,7 +8,7 @@ class PdfCreator {
         await rootBundle.load('assets/fonts/IBMPlexSansJP-Regular.ttf');
     final font = pw.Font.ttf(fontData);
 
-    print(font);
+    // print(font);
 
     final pdf = pw.Document(
       author: "haga",
@@ -57,4 +57,23 @@ class PdfCreator {
 
     return pdf;
   }
+
+  // static printPdf(BuildContext context) async {
+  //   // final pdf = await PdfCreator.create();
+  //   // final bytes = await pdf.save();
+
+  //   // await Printing.sharePdf(bytes: bytes);
+  //   final printer = await Printing.pickPrinter(context: context);
+  //   print(printer);
+
+  //   if (printer == null) {
+  //     await Printing.directPrintPdf(
+  //       printer: printer!,
+  //       onLayout: (format) async {
+  //         final pdf = await PdfCreator.create();
+  //         return pdf.save();
+  //       },
+  //     );
+  //   }
+  // }
 }

@@ -17,8 +17,7 @@ final searhMedMasterProvider = FutureProvider<List<MedMaster?>>(
 
     // 数字のみの場合はgs1で検索
     if (int.tryParse(searchWord) != null) {
-      print('is number');
-      print(int.parse(searchWord));
+      // print('is number');
 
       // GS-1コードは index 2桁 + 14桁の数字であることを確認する
       if (searchWord.length != 16) {

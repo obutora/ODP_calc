@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../const.dart';
-import '../../provider/search_checkbox_provider.dart';
+import '../../provider/form/checkbox/search_checkbox_provider.dart';
 
 class SearchCheckBoxGroup extends ConsumerWidget {
   const SearchCheckBoxGroup({
