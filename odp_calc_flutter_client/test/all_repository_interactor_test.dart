@@ -87,5 +87,46 @@ Future main() async {
       await medMasterRepo.deleteAllByName('アムロジピン');
       await medCollectionRepo.deleteByPatientId(12);
     });
+
+    test("GS-1から、それを含む患者リストとそれぞれの薬の集薬量をPickedMedCollectionのリストで取得", () async {
+      final repo = AllRepositoryInteractor();
+
+      final patient = Patient(
+          name: 'patient',
+          katakana: 'カタカナ',
+          patientId: 12,
+          updateAt: DateTime.now());
+      final int patientId = await patientRepo.put(patient);
+
+      final master = MedMaster(name: 'アムロジピン', unit: '錠', gs1CodeList: [1234]);
+      final int medMasterId = await medMasterRepo.put(master);
+
+      final collection = MedCollection(
+          patientId: patientId,
+          medMasterId: medMasterId,
+          amount: 100,
+          isCollected: false);
+      await medCollectionRepo.put(collection);
+
+      final pickedList = await repo.getPickedMedCollectionByGs1(1234);
+
+      expect(pickedList.isNotEmpty, true);
+      final picked = pickedList.first!;
+
+      expect(picked.patientName, 'patient');
+      expect(picked.medName, 'アムロジピン');
+      expect(picked.amount, 100);
+
+      // isCollectedで分割できるか確認
+      final splitted = PickedMedCollectionUsecase.splitByIsCollected(
+          pickedList.cast<PickedMedCollection>());
+
+      expect(splitted['collected']!.isEmpty, true);
+      expect(splitted['notCollected']!.isNotEmpty, true);
+
+      await patientRepo.deleteByName('patient');
+      await medMasterRepo.deleteAllByName('アムロジピン');
+      await medCollectionRepo.deleteByPatientId(12);
+    });
   });
 }
