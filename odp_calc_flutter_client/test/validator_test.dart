@@ -22,6 +22,17 @@ main() {
       expect(val2, null);
     });
 
+    test("カタカナ入力のみを許容する", () {
+      final val = Validator.onlyKatakana('あいうえお');
+      expect(val, 'カタカナだけ入力してください');
+
+      final val2 = Validator.onlyKatakana('アムロジピン5mg');
+      expect(val2, 'カタカナだけ入力してください');
+
+      final val3 = Validator.onlyKatakana('アムロジピン');
+      expect(val3, null);
+    });
+
     test("半角・全角数字のみの入力を許容しない", () {
       final val = Validator.isNotNum('１２３４５６７８９０');
       expect(val, '全角・半角数字のみは入力できません');
