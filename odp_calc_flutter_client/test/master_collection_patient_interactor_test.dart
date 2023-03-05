@@ -20,11 +20,14 @@ Future main() async {
   final medMasterRepo = MedMasterRepository();
   final medCollectionRepo = MedCollectionRepository();
 
+  // テスト環境と本番環境は異なる
+  // テスト環境のDBを初期化する為の処理
   await patientRepo.deleteAll();
   await medMasterRepo.deleteAll();
   await medCollectionRepo.deleteAll();
 
   group("all repository interactor", () {
+    // DBの読み書きなしで、PickedMedCollectionを作成するためのテスト
     test("create: PickedMedCollection", () async {
       final patient = Patient(
           id: 1,
@@ -49,8 +52,9 @@ Future main() async {
     });
 
     test("薬の名称から、それを含む患者リストとそれぞれの薬の集薬量をPickedMedCollectionのリストで取得", () async {
-      final repo = AllRepositoryInteractor();
+      final repo = MasterCollectionPatientInteractor();
 
+      // patientを作成してput
       final patient = Patient(
           name: 'patient',
           katakana: 'カタカナ',
@@ -58,9 +62,11 @@ Future main() async {
           updateAt: DateTime.now());
       final int patientId = await patientRepo.put(patient);
 
+      // masterを作成してput
       final master = MedMaster(name: 'アムロジピン', unit: '錠', gs1CodeList: [1234]);
       final int medMasterId = await medMasterRepo.put(master);
 
+      // collectionを作成してput
       final collection = MedCollection(
           patientId: patientId,
           medMasterId: medMasterId,
@@ -68,6 +74,7 @@ Future main() async {
           isCollected: false);
       await medCollectionRepo.put(collection);
 
+      // patient - master - collection の連結テーブルを表現する PickedMedCollection をリストで取得
       final pickedList = await repo.getPickedMedCollectionByMedName('アムロジピン');
       expect(pickedList.isNotEmpty, true);
       final picked = pickedList.first!;
@@ -89,8 +96,9 @@ Future main() async {
     });
 
     test("GS-1から、それを含む患者リストとそれぞれの薬の集薬量をPickedMedCollectionのリストで取得", () async {
-      final repo = AllRepositoryInteractor();
+      final repo = MasterCollectionPatientInteractor();
 
+      // patientを作成してput
       final patient = Patient(
           name: 'patient',
           katakana: 'カタカナ',
@@ -98,9 +106,11 @@ Future main() async {
           updateAt: DateTime.now());
       final int patientId = await patientRepo.put(patient);
 
+      // masterを作成してput
       final master = MedMaster(name: 'アムロジピン', unit: '錠', gs1CodeList: [1234]);
       final int medMasterId = await medMasterRepo.put(master);
 
+      // collectionを作成してput
       final collection = MedCollection(
           patientId: patientId,
           medMasterId: medMasterId,
@@ -108,6 +118,8 @@ Future main() async {
           isCollected: false);
       await medCollectionRepo.put(collection);
 
+      // patient - master - collection の連結テーブルを表現する PickedMedCollection をリストで取得
+      // gs-1コードをKeyにして検索する
       final pickedList = await repo.getPickedMedCollectionByGs1(1234);
 
       expect(pickedList.isNotEmpty, true);
