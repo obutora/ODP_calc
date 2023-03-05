@@ -43,5 +43,16 @@ main() {
       final val3 = Validator.isNotNum('アムロジピン5mg');
       expect(val3, null);
     });
+
+    test("半角数字のみを許容する", () {
+      final val = Validator.isNum('１２３４５６７８９０');
+      expect(val, '半角数字だけ入力してください');
+
+      final val2 = Validator.isNum('1234567890');
+      expect(val2, null);
+
+      final val3 = Validator.isNum('アムロジピン5mg');
+      expect(val3, '半角数字だけ入力してください');
+    });
   });
 }
