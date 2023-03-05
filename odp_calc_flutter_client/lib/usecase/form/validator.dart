@@ -24,6 +24,15 @@ class Validator {
     return null;
   }
 
+  static String? isNotNum(String? value) {
+    final reg = RegExp(r'^[0-9０-９]+$');
+
+    if (reg.hasMatch(value!)) {
+      return '全角・半角数字のみは入力できません';
+    }
+    return null;
+  }
+
   static String? isNum(String? value) {
     final isNum = int.tryParse(value!);
 
