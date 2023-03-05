@@ -5,7 +5,7 @@ import '../../repository/med_collection_repository.dart';
 import '../../repository/med_master_repository.dart';
 import '../../repository/patient_repository.dart';
 
-class AllRepositoryInteractor {
+class MasterCollectionPatientInteractor {
   final medMasterRepo = MedMasterRepository();
   final medCollectionRepo = MedCollectionRepository();
   final patientRepo = PatientRepository();
