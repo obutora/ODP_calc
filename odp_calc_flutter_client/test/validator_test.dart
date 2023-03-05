@@ -14,6 +14,14 @@ main() {
       expect(val3, null);
     });
 
+    test("Emptyを許容しない", () {
+      final val = Validator.notEmpty('');
+      expect(val, 'なにか入力してください');
+
+      final val2 = Validator.notEmpty('アムロジピン5mg');
+      expect(val2, null);
+    });
+
     test("半角・全角数字のみの入力を許容しない", () {
       final val = Validator.isNotNum('１２３４５６７８９０');
       expect(val, '全角・半角数字のみは入力できません');
