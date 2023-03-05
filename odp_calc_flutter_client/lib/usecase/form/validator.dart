@@ -24,6 +24,8 @@ class Validator {
     return null;
   }
 
+  // 数値のみのStringを許容しない
+  // -> 全てが数値の時にエラーメッセージを返却する
   static String? isNotNum(String? value) {
     final reg = RegExp(r'^[0-9０-９]+$');
 
